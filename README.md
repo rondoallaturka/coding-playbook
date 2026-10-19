@@ -1,4 +1,4 @@
-# Agent guidance
+# Coding playbook
 
 Instruction files for AI coding agents (Claude Code, Cursor, Codex): a short set of working principles that loads in every session, and two skills that load only when they're relevant.
 
