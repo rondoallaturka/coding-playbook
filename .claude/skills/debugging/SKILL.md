@@ -41,6 +41,6 @@ You can run tests, builds, and the app without asking.
 
 ## Report
 
-- Lead with the cause and the fix, in a sentence or two.
+- Start with what was broken and what's fixed, in terms the user would notice, then the technical cause.
 - Show the evidence: the reproduction command or test, and its result before and after.
 - Mention what else the change could affect, anything you couldn't verify, other places that may have the same bug, and docs that are now out of date.
