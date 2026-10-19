@@ -33,4 +33,4 @@ For each screen or component you touched:
 
 ## Fresh-eyes review for new screens and flows
 
-For a new screen or multi-step flow, have a reviewer who hasn't seen the code (a subagent or a fresh session) look at screenshots with the user's goal in mind and report what's confusing, missing, or inconsistent. Fix what stops the user from completing their task; treat the rest as suggestions.
+For a new screen or multi-step flow, show it to the person you're working with, ideally in a tool that lets them comment on specific elements, and ask what's confusing, missing, or inconsistent. Fix what stops the user from completing their task; treat the rest as suggestions.
