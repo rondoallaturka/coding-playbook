@@ -63,4 +63,4 @@ End with a final check the user can answer quickly:
 > **What changed:** [a few short lines]
 > **Matters most:** [the one change that most affects the goal and assumptions agreed at the start, and why]
 >
-> [the one question whose answer would confirm that change is right]
+> [one yes/no question whose answer would confirm that change is right, and what each answer would mean]
