@@ -4,10 +4,10 @@ Instructions and skills for working with AI coding agents (Claude Code, Cursor, 
 
 | File | Loads | Covers |
 | --- | --- | --- |
-| `personal/communication.md` | Every session, once added to your personal `~/.claude/CLAUDE.md` | Plain language, why before what and how, one question at a time, guess-and-go for quick tasks |
+| `personal/communication.md` | Every Claude Code session on your computer, once added to your personal `~/.claude/CLAUDE.md` | Plain language, why before what and how, one question at a time, guess-and-go for quick tasks |
 | `AGENTS.md` | Every session | Scope, fitting the codebase, errors, tests, UI basics, communication |
 | `CLAUDE.md` | Every session in Claude Code | Imports `AGENTS.md`, so Claude Code always reads it |
-| `.claude/skills/aligning/` | Before a plan or an ambiguous task | Socratic questions one at a time, then a yes/no on the load-bearing assumptions |
+| `.claude/skills/aligning/` | Before work where a wrong guess about the goal would waste real effort | Socratic questions one at a time, then a yes/no on the load-bearing assumptions |
 | `.claude/skills/running-plans/` | When planning or running coding work | Chunks, effort per chunk, a reviewer per chunk, check-ins when a why changes |
 | `.claude/skills/debugging/` | When debugging | Reproduce, investigate, fix, verify, report |
 | `.claude/skills/building-ui/` | When building or changing UI | Looking at the result, UI states, accessibility, design fit |

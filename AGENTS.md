@@ -32,4 +32,4 @@ Passing tests don't show that a UI works. When you change something a user sees,
 
 - Before a non-trivial change, say in a sentence or two what you understand the problem to be and what you plan to do.
 - Make routine judgment calls yourself. Ask when different readings of the request would lead to materially different work, or before anything destructive or hard to undo.
-- When you finish, lead with what changed and how you checked it. If something isn't verified, say so.
+- When you finish, say what changed and how you checked it. If something isn't verified, say so.
