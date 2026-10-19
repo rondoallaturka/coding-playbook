@@ -57,3 +57,10 @@ When you check in, use this order and ask one question:
 ## Finish
 
 Lead with what it means for the user's goal: what now works. Then say what changed and, in one line, how it was checked. Then list any assumptions that changed along the way and any how-level decisions worth knowing about.
+
+End with a final check the user can answer quickly:
+
+> **What changed:** [a few short lines]
+> **Matters most:** [the one change that most affects the goal and assumptions agreed at the start, and why]
+>
+> [the one question whose answer would confirm that change is right]
