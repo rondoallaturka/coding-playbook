@@ -1,107 +1,52 @@
-# Debugging RULES that MUST be followed EXACTLY
- 
-## Context
-- Used when debugging any code issues
-- Used when investigating runtime errors, build failures, or unexpected behavior
-- Used when implementing fixes to ensure comprehensive problem-solving
- 
-## Critical Rules
- 
-### Guidelines
- 
-- ALWAYS handle ONLY one issue, bug, or failing test at a time
-- ALWAYS verify that you have fixed that issue before moving on
-- YOU HAVE PERMISSION to run tests and build the app
-- You MUST complete all deebugging phases
- 
-### Phase 1: Gather Info on Error
- 
-- ALWAYS attempt to reproduce the issue with tests and/or a full build
-- ALWAYS add new debugging print statements
-   - Ensure they will print in a regular IDE terminal
-- ALWAYS document exact error messages and stack traces
-- Move to Phase 2
- 
-### Phase 2: Review Project Context
- 
-- ALWAYS assess recent changes to identify what might have recently broken
-- ALWAYS assess related files to identify if functionality already exists to fix it
-- ALWAYS consult arch.md to identify relevant project architecture
-- ALWAYS consult RulesOverview.md to identify technical requirements
-- ALWAYS attempt to locate information about relevant schemas (APIs, databases, etc) if relevant
-- ALWAYS read the comments in all involved files
-- Move to Phase 3
- 
-### Phase 3: Assess Potential Causes
- 
-- List all possible proximal and root causes for the issue
-- List evidence for and against each hypothesis
-- Create and perform minimally risky/invasive tests for each hypothesis
-- Identify most likely root cause
-- Move to Phase 4
- 
-### Phase 4: Design Solutions
- 
-1. Generate Multiple Solutions:
-   - List at least 2-3 possible fixes for the root cause
-   - List which lines, files, and structures would need to change:
-      - To fix the issue
-      - To avoid creating new issues
-      - To preserve other functionality
-      - To keep the codebase and architecture consistent
- 
- 
-2. Evaluate Each Solution:
-   - Rate each solution on:
-      - Likelihood of working
-      - Elegance
-      - Destructiveness
-      - Modularit
-      - Risk of breaking functionality
-      - Compliance with architectural Standards
-      - Compliance with language best practices
-      - Compliance with Cursor rules
-      - Maintenance burden
-      - Performance burden
-      - Security risk
-   - Perform a basic sanity check
-      - e.g. if you want to create an entirely new project or demand major new permissions just to solve a trivial issue, it's probably a bad idea
- 
-3. Choose a Solution
-   - Pick the best solution overall using senior software engineer judgement
-   - Move to Phase 5
- 
-### Phase 5: Implement Solution
- 
-1. Before Implementing:
-   - Document the chosen approach
-   - List required changes
-   - Identify test cases needed
-   - Note potential side effects
-   - Decide whether to proceed:
-      - If solution has low elegance, high destructiveness, or hisk risk of breaking functionality, STOP IMMEDIATELY and ask user permission to continue
-      - Otherwise, continue
- 
-2. During Implementation:
-   - Add comprehensive comments
-   - Include debug logs if helpful
-   - Update tests
-   - Follow style guides
- 
-3. Move to Phase 6
- 
-### Phase 6: Test
- 
-1. Run full test suite
-2. Ensure app still builds
-3. ONLY proceed to next phrase if either:
-   - Issue is fixed, or
-   - Further edits are needed but require user input or permission (e.g. they are major architectural changes)
- 
-### Phase 7: Communicate
- 
-- Summarise your debugging process, key considerations, and decisions to the user
-- Inform user if any architectural, rule, or other files may need to be updated
-- Brief the user on what functionality could have been affected and if it's worth testing
-- Update any relevant documentation
-- Remove or suppress debug statements
+# Agent guidance
+
+Instruction files for AI coding agents (Claude Code, Cursor, Codex): a short set of working principles that loads in every session, and two skills that load only when they're relevant.
+
+| File | Loads | Covers |
+| --- | --- | --- |
+| `AGENTS.md` | Every session | Scope, fitting the codebase, errors, tests, UI basics, communication |
+| `CLAUDE.md` | Every session in Claude Code | Imports `AGENTS.md`, so Claude Code always reads it |
+| `.claude/skills/debugging/` | When debugging | Reproduce, investigate, fix, verify, report |
+| `.claude/skills/building-ui/` | When building or changing UI | Looking at the result, UI states, accessibility, design fit |
+
+## Add to a project
+
+From the project's root:
+
+```bash
+GUIDE=/path/to/this/repo
+cp "$GUIDE/AGENTS.md" .
+mkdir -p .claude/skills && cp -r "$GUIDE/.claude/skills/." .claude/skills/
+[ -f CLAUDE.md ] || cp "$GUIDE/CLAUDE.md" .
+```
+
+Then:
+
+1. Add a short section at the top of `AGENTS.md` with the project's build, test, lint, and run commands, plus anything an agent can't work out from the code: required environment variables, generated files not to edit, services to start. This is the most valuable part of the file, and the one part a template can't supply.
+2. If the project already had a `CLAUDE.md`, add the line `@AGENTS.md` to it.
+3. For Codex, which reads skills from `.agents/skills/`, also run `mkdir -p .agents && ln -s ../.claude/skills .agents/skills` (or copy the folder). Cursor reads `AGENTS.md` and `.claude/skills/` as they are; it also reads `.agents/skills/`, so with the link it may list each skill twice.
+
+## Why it's built this way
+
+- **A short always-on file, with procedures in skills.** Everything in `AGENTS.md` costs context in every session, and long instruction files get followed less reliably. Procedures that only apply sometimes load when they're needed.
+- **Plain language, no ALL CAPS.** Current models follow instructions closely, and emphatic wording makes them over-apply rules. The files give reasons instead of raising their voice.
+- **Effort matches the problem.** The debugging skill runs from "reproduce, fix, verify" for an obvious bug up to hypothesis-driven investigation for a hard one, instead of one fixed procedure for everything.
+- **Every task has a real check.** For a bug, it's a reproduction that fails before the fix and passes after. For UI, it's looking at the rendered result in each state. Gaming the check (editing tests, suppressing errors, special-casing inputs) is ruled out explicitly, because it's the most common way agents go wrong.
+- **No contradictions.** The files agree with each other, and where they differ from a project's own conventions, the project wins.
+- **Hard guarantees belong in tooling.** Instructions are advisory. Anything that must never happen, like writing to production, editing migrations, or force-pushing, should be blocked with permissions or hooks, not with a sentence here.
+
+## Keeping it useful
+
+- Add a rule only after an agent makes the same mistake twice, and cut any rule the agent already follows without being told.
+- Try a change on a few real tasks, with and without it, and keep it only if the agent's behavior improves.
+- In Claude Code, `/doctor prompt-audit` flags instructions that are outdated, conflicting, or point at files that don't exist.
+
+## Sources
+
+- Anthropic: [Claude Code best practices](https://code.claude.com/docs/en/best-practices), [CLAUDE.md and memory](https://code.claude.com/docs/en/memory), [Skills](https://code.claude.com/docs/en/skills), [Skill authoring best practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices), [Prompting best practices](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices), [Effective context engineering for AI agents](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- OpenAI: [Codex best practices](https://developers.openai.com/codex/learn/best-practices), [Codex skills](https://developers.openai.com/codex/skills), [GPT-5 prompting guide](https://developers.openai.com/cookbook/examples/gpt-5/gpt-5_prompting_guide)
+- Cursor: [Rules](https://cursor.com/docs/context/rules), [Skills](https://cursor.com/docs/skills)
+- Gloaguen et al., [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/abs/2602.11988) (ICLR 2026)
+- David Agans, *Debugging: The 9 Indispensable Rules* ([review](https://dwheeler.com/essays/debugging-agans.html))
+- John Ousterhout and Robert Martin, [A Philosophy of Software Design vs. Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code)
+- Nielsen Norman Group, [10 usability heuristics](https://www.nngroup.com/articles/ten-usability-heuristics/)
